@@ -61,7 +61,7 @@ The technology stack is selected to minimize deployment friction while guarantee
 
 ### 7. Project Links
 * **Pitch Deck Link:** `[INSERT PITCH DECK LINK HERE]`
-* **GitHub Repository Link:** `https://github.com/leooooooooo-mzzza/ecotrace-protocol`
+* **GitHub Repository Link:** `https://github.com/leonardo-moza/ecotrace-protocol`
 * **Video Demo Link (2–5 minutes):** `[INSERT DEMO VIDEO LINK HERE]`
 
 ### 8. Justification of Impact and Scalability
