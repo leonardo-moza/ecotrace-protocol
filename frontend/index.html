@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrace Protocol - DApp Simulator</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+        }
+        .phone-container {
+            max-width: 412px;
+            height: 844px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4 text-slate-100">
+
+    <div class="mb-6 text-center">
+        <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+            EcoTrace Protocol
+        </h1>
+        <p class="text-xs text-slate-400 mt-1">Simulador de Trazabilidad On-Chain (LACNet Pro-Testnet)</p>
+        <span class="inline-block mt-2 px-3 py-1 text-xs font-semibold text-emerald-400 bg-emerald-950/50 rounded-full border border-emerald-500/20">
+            <i class="fa-solid fa-link mr-1"></i> Smart Contract Active: EcoTrace.sol
+        </span>
+    </div>
+
+    <!-- MOCKUP DEL TELÉFONO MÓVIL -->
+    <div class="phone-container relative w-full rounded-[40px] border-8 border-slate-800 bg-slate-950 flex flex-col overflow-hidden">
+        
+        <!-- BARRA DE ESTADO -->
+        <div class="w-full px-6 pt-3 pb-2 flex justify-between items-center text-xs text-slate-400 font-medium z-10 bg-slate-950">
+            <span>19:30</span>
+            <div class="w-20 h-4 bg-black rounded-full absolute left-1/2 transform -translate-x-1/2 top-2"></div>
+            <div class="flex items-center space-x-1.5">
+                <i class="fa-solid fa-signal"></i>
+                <i class="fa-solid fa-wifi"></i>
+                <i class="fa-solid fa-battery-three-quarters"></i>
+            </div>
+        </div>
+
+        <!-- PANTALLAS INTERACTIVAS -->
+        <div class="flex-1 flex flex-col overflow-y-auto no-scrollbar relative p-5">
+
+            <!-- ================= PANTALLA 1: LOGIN / WALLET ================= -->
+            <div id="screen-login" class="flex-1 flex flex-col justify-between py-8">
+                <div class="text-center mt-12">
+                    <div class="inline-flex p-5 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-3xl border border-emerald-500/20 shadow-lg shadow-emerald-500/5 mb-6">
+                        <i class="fa-solid fa-recycle text-4xl text-emerald-400 animate-pulse"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold tracking-tight">EcoTrace Protocol</h2>
+                    <p class="text-slate-400 text-sm mt-2 max-w-xs mx-auto">
+                        Trazabilidad inmutable para la economía circular mediante Smart Contracts en LACNet.
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <button onclick="connectWallet()" class="w-full py-4 px-6 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-bold rounded-2xl shadow-lg transition-all duration-300 transform active:scale-95 flex items-center justify-center space-x-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" class="w-6 h-6">
+                        <span>Conectar Wallet Web3</span>
+                    </button>
+                    <p class="text-[10px] text-center text-slate-500 leading-relaxed max-w-xs mx-auto">
+                        Al conectar autenticas tu identidad criptográfica en LACNet. Los lotes registrados quedarán certificados de forma inmutable.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ================= PANTALLA 2: REGISTRO DE LOTES (DASHBOARD) ================= -->
+            <div id="screen-dashboard" class="hidden flex-1 flex flex-col space-y-5">
+                
+                <!-- HEADER -->
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center text-slate-950 font-bold">
+                            <i class="fa-solid fa-industry text-xs"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-1">
+                                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-ping"></span>
+                                <span class="text-xs text-emerald-400 font-semibold uppercase">LACNet Conectado</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 font-mono" id="wallet-address">0x3F8a...9B12</p>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 text-emerald-400 rounded-lg text-[10px] font-mono">
+                        Testnet Node
+                    </span>
+                </div>
+
+                <!-- METRICAS DE IMPACTO -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="p-4 bg-slate-900 rounded-2xl border border-slate-800/60 text-center">
+                        <p class="text-[10px] text-slate-400 font-medium">Total Lotes Registrados</p>
+                        <p class="text-xl font-bold mt-1 text-slate-100" id="total-batches-count">2</p>
+                        <span class="text-[9px] text-slate-500 block mt-0.5">En Blockchain</span>
+                    </div>
+                    <div class="p-4 bg-slate-900 rounded-2xl border border-slate-800/60 text-center">
+                        <p class="text-[10px] text-slate-400 font-medium">Volumen Trazado</p>
+                        <p class="text-xl font-bold mt-1 text-emerald-400" id="total-weight-count">350 Kg</p>
+                        <span class="text-[9px] text-slate-500 block mt-0.5">Material Verificado</span>
+                    </div>
+                </div>
+
+                <!-- FORMULARIO: registerBatch -->
+                <div class="p-4 bg-emerald-950/20 rounded-2xl border border-emerald-500/20 space-y-3">
+                    <div class="flex items-center space-x-2 text-xs font-semibold text-emerald-400">
+                        <i class="fa-solid fa-boxes-packing"></i>
+                        <span>Registrar Nuevo Lote (`registerBatch`)</span>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div>
+                            <label class="text-[10px] text-slate-400 block mb-1">Tipo de Material</label>
+                            <select id="input-material" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+                                <option value="PET (Plástico Botella)">PET (Plástico Botella)</option>
+                                <option value="HDPE (Plástico Duro)">HDPE (Plástico Duro)</option>
+                                <option value="Cartón / Papel">Cartón / Papel</option>
+                                <option value="Aluminio / Metales">Aluminio / Metales</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-[10px] text-slate-400 block mb-1">Peso (Kg)</label>
+                                <input type="number" id="input-weight" placeholder="Ej: 150" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-slate-400 block mb-1">Ubicación Origen</label>
+                                <input type="text" id="input-location" placeholder="Ej: San Marcos" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+
+                        <button onclick="registerBatchSimulated()" class="w-full mt-2 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition-all flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-bolt"></i>
+                            <span>Firmar y Registrar en LACNet</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FEED REGISTRO AUDITABLE -->
+                <div class="space-y-2 flex-1">
+                    <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Historial de Lotes On-Chain</h3>
+                    <div class="space-y-2 h-36 overflow-y-auto no-scrollbar pr-1" id="ledger-feed">
+                        <!-- Fila 1 -->
+                        <div class="p-2.5 bg-slate-900/60 rounded-xl border border-slate-900 flex justify-between items-center text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="p-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg">#1</span>
+                                <div>
+                                    <p class="font-medium">200 Kg - Cartón</p>
+                                    <p class="text-[9px] text-slate-500">Planta Sur · Tx: 0x8f...11</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] text-emerald-400 font-mono">VERIFICADO</span>
+                        </div>
+                        <!-- Fila 0 -->
+                        <div class="p-2.5 bg-slate-900/60 rounded-xl border border-slate-900 flex justify-between items-center text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="p-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg">#0</span>
+                                <div>
+                                    <p class="font-medium">150 Kg - PET</p>
+                                    <p class="text-[9px] text-slate-500">San Marcos · Tx: 0x4a...2b</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] text-emerald-400 font-mono">VERIFICADO</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTTOM NAV -->
+                <div class="pt-2 flex justify-around border-t border-slate-900 text-slate-400 text-xs">
+                    <button class="flex flex-col items-center space-y-1 text-emerald-400">
+                        <i class="fa-solid fa-plus-circle text-lg"></i>
+                        <span class="text-[9px]">Registrar</span>
+                    </button>
+                    <button onclick="goToAudit()" class="flex flex-col items-center space-y-1 hover:text-slate-200">
+                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                        <span class="text-[9px]">Auditar (`getBatch`)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= PANTALLA 3: AUDITORÍA Y CONSULTA (getBatch) ================= -->
+            <div id="screen-audit" class="hidden flex-1 flex flex-col space-y-4">
+                
+                <!-- HEADER AUDIT -->
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <button onclick="goToDashboard()" class="p-1.5 bg-slate-950 text-slate-400 hover:text-slate-100 rounded-lg">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                        <h2 class="text-lg font-bold">Auditoría Pública</h2>
+                    </div>
+                    <span class="px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full text-[10px] font-bold">
+                        <i class="fa-solid fa-shield-halved"></i> LACNet
+                    </span>
+                </div>
+
+                <p class="text-[11px] text-slate-400 leading-relaxed">
+                    Consulta cualquier ID de lote para verificar su autenticidad y origen directamente desde el Smart Contract sin intermediarios.
+                </p>
+
+                <!-- BUSCADOR -->
+                <div class="flex space-x-2">
+                    <input type="number" id="search-batch-id" placeholder="Ingresa ID del Lote (ej: 0)" class="flex-1 px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+                    <button onclick="queryBatch()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition-all">
+                        Consultar
+                    </button>
+                </div>
+
+                <!-- RESULTADO DE LA CONSULTA (CERTIFICADO) -->
+                <div id="audit-result" class="hidden p-4 bg-slate-900/90 rounded-2xl border border-emerald-500/40 space-y-3 relative overflow-hidden">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span class="text-xs font-bold text-emerald-400"><i class="fa-solid fa-circle-check"></i> Certificado Auténtico</span>
+                        <span class="text-[10px] font-mono text-slate-400" id="result-id">ID: #0</span>
+                    </div>
+
+                    <div class="space-y-1.5 text-xs">
+                        <div class="flex justify-between"><span class="text-slate-400">Material:</span> <span class="font-semibold text-slate-100" id="result-material">PET</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Peso:</span> <span class="font-semibold text-slate-100" id="result-weight">150 Kg</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Origen:</span> <span class="font-semibold text-slate-100" id="result-location">San Marcos</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Registrador:</span> <span class="font-mono text-[10px] text-slate-300" id="result-owner">0x3F8a...9B12</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Timestamp:</span> <span class="text-[10px] text-slate-300">14 Jul 2026, 01:42 UTC</span></div>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-[10px] text-slate-500">
+                        <span>Red: LACNet Open Testnet</span>
+                        <span class="text-emerald-400 underline cursor-pointer">Ver en Explorer ↗</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- POPUP NOTIFICACIÓN -->
+        <div id="success-popup" class="hidden absolute inset-x-5 bottom-8 bg-slate-900 border border-emerald-500/40 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 shadow-2xl shadow-black z-30 transition-all duration-300">
+            <span class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                <i class="fa-solid fa-check text-lg"></i>
+            </span>
+            <p class="text-xs font-bold text-center text-slate-100">Transacción Confirmada</p>
+            <p class="text-[9px] text-center text-slate-400" id="popup-desc">Lote registrado con éxito en LACNet.</p>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Base de datos simulada del Smart Contract
+        let totalBatches = 2;
+        let totalWeight = 350;
+        const dbBatches = {
+            0: { material: "PET (Plástico Botella)", weight: 150, location: "Planta San Marcos - Lima", owner: "0x3F8a...9B12" },
+            1: { material: "Cartón / Papel", weight: 200, location: "Planta Sur - Lima", owner: "0x3F8a...9B12" }
+        };
+
+        // Navegación
+        function connectWallet() {
+            document.getElementById('screen-login').classList.add('hidden');
+            document.getElementById('screen-dashboard').classList.remove('hidden');
+        }
+
+        function goToAudit() {
+            document.getElementById('screen-dashboard').classList.add('hidden');
+            document.getElementById('screen-audit').classList.remove('hidden');
+        }
+
+        function goToDashboard() {
+            document.getElementById('screen-audit').classList.add('hidden');
+            document.getElementById('screen-dashboard').classList.remove('hidden');
+        }
+
+        // Registrar Lote (Simulación de registerBatch)
+        function registerBatchSimulated() {
+            const material = document.getElementById('input-material').value;
+            const weight = parseFloat(document.getElementById('input-weight').value);
+            const location = document.getElementById('input-location').value;
+
+            if (isNaN(weight) || weight <= 0 || !location) {
+                showPopup("Por favor ingresa un peso válido y la ubicación.", false);
+                return;
+            }
+
+            const newId = totalBatches;
+            totalBatches++;
+            totalWeight += weight;
+
+            dbBatches[newId] = {
+                material: material,
+                weight: weight,
+                location: location,
+                owner: "0x3F8a...9B12"
+            };
+
+            // Actualizar Métricas
+            document.getElementById('total-batches-count').innerText = totalBatches;
+            document.getElementById('total-weight-count').innerText = totalWeight + " Kg";
+
+            // Limpiar inputs
+            document.getElementById('input-weight').value = "";
+            document.getElementById('input-location').value = "";
+
+            // Agregar al Feed
+            const feed = document.getElementById('ledger-feed');
+            const randomHash = "0x" + Math.random().toString(16).slice(2, 6) + "..." + Math.random().toString(16).slice(2, 4);
+            
+            const newTx = document.createElement('div');
+            newTx.className = "p-2.5 bg-slate-900/60 rounded-xl border border-slate-900 flex justify-between items-center text-xs";
+            newTx.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <span class="p-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg">#${newId}</span>
+                    <div>
+                        <p class="font-medium">${weight} Kg - ${material.split(' ')[0]}</p>
+                        <p class="text-[9px] text-slate-500">${location} · Tx: ${randomHash}</p>
+                    </div>
+                </div>
+                <span class="text-[10px] text-emerald-400 font-mono">VERIFICADO</span>
+            `;
+            feed.insertBefore(newTx, feed.firstChild);
+
+            showPopup(`¡Lote #${newId} registrado en LACNet! Hash: ${randomHash}`, true);
+        }
+
+        // Consultar Lote (Simulación de getBatch)
+        function queryBatch() {
+            const id = document.getElementById('search-batch-id').value;
+            const resultBox = document.getElementById('audit-result');
+
+            if (id === "" || !dbBatches[id]) {
+                showPopup("El ID de lote buscado no existe en Blockchain.", false);
+                resultBox.classList.add('hidden');
+                return;
+            }
+
+            const data = dbBatches[id];
+            document.getElementById('result-id').innerText = `ID: #${id}`;
+            document.getElementById('result-material').innerText = data.material;
+            document.getElementById('result-weight').innerText = `${data.weight} Kg`;
+            document.getElementById('result-location').innerText = data.location;
+            document.getElementById('result-owner').innerText = data.owner;
+
+            resultBox.classList.remove('hidden');
+        }
+
+        // Popup de Notificación
+        function showPopup(text, isSuccess) {
+            const popup = document.getElementById('success-popup');
+            document.getElementById('popup-desc').innerText = text;
+
+            if (isSuccess) {
+                popup.classList.remove('border-rose-500/40');
+                popup.classList.add('border-emerald-500/40');
+                popup.querySelector('span').className = "w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center";
+                popup.querySelector('span').innerHTML = '<i class="fa-solid fa-check text-lg"></i>';
+            } else {
+                popup.classList.remove('border-emerald-500/40');
+                popup.classList.add('border-rose-500/40');
+                popup.querySelector('span').className = "w-10 h-10 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center";
+                popup.querySelector('span').innerHTML = '<i class="fa-solid fa-xmark text-lg"></i>';
+            }
+
+            popup.classList.remove('hidden');
+            setTimeout(() => { popup.classList.add('hidden'); }, 3500);
+        }
+    </script>
+</body>
+</html>
